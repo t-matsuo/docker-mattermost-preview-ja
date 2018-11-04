@@ -1,2 +1,2 @@
-# docker-reposync
-mattermost-preve docker image customized for japanese search
+# docker-mattermost-preview-ja
+mattermost-preview docker image customized for japanese search
