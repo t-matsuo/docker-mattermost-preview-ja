@@ -27,8 +27,22 @@ function update_db {
 			fi
 		done
 		
-		MYSQL_PWD=mostest mysql mattermost_test -u mmuser -e "ALTER TABLE Posts DROP INDEX idx_posts_message_txt;"
-		MYSQL_PWD=mostest mysql mattermost_test -u mmuser -e "ALTER TABLE Posts ADD FULLTEXT INDEX idx_posts_message_txt (\`Message\`) WITH PARSER ngram COMMENT 'ngram index sample';"
+		while true; do
+			MYSQL_PWD=mostest mysql mattermost_test -u mmuser -e "ALTER TABLE Posts DROP INDEX idx_posts_message_txt;"
+			if [ $? -eq 0 ]; then
+				break
+			fi
+			echo "##### retring DROP INDEX ... #####"
+			sleep 3
+		done
+		while true; do
+			MYSQL_PWD=mostest mysql mattermost_test -u mmuser -e "ALTER TABLE Posts ADD FULLTEXT INDEX idx_posts_message_txt (\`Message\`) WITH PARSER ngram COMMENT 'ngram index sample';"
+			if [ $? -eq 0 ]; then
+				break
+			fi
+			echo "##### retring ADD INDEX ... #####"
+			sleep 3
+		done
 		touch /var/lib/mysql/custom-ja
 		echo "########## /var/lib/mysql/custom-ja created ##########"
 	else
