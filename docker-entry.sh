@@ -10,6 +10,9 @@ until mysqladmin -hlocalhost -P3306 -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" processl
 	sleep 5
 done
 
+echo "Updating CA certificates"
+update-ca-certificates --fresh >/dev/null
+
 function update_db {
 	if [ ! -f /var/lib/mysql/custom-ja ]; then
 		echo "########## Updating db for Japanese ##########"
@@ -36,4 +39,4 @@ function update_db {
 update_db &
 echo "Starting platform"
 cd mattermost
-exec ./bin/platform --config=config/config_docker.json
+exec ./bin/mattermost --config=config/config_docker.json
