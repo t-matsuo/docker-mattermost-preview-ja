@@ -14,17 +14,6 @@ function update_db {
 	if [ ! -f /var/lib/mysql/custom-ja ]; then
 		echo "########## Updating db for Japanese ##########"
 		while true; do
-			MYSQL_PWD=mostest mysql -u mmuser mattermost_test -e "select * from Posts limit 0;"
-			if [ $? -ne 0 ]; then
-				sleep 3
-				echo "########## No Posts Table -> sleep 3 ##########"
-			else
-				sleep 3
-				break
-			fi
-		done
-		
-		while true; do
 			MYSQL_PWD=mostest mysql mattermost_test -u mmuser -e "ALTER TABLE Posts DROP INDEX idx_posts_message_txt;"
 			if [ $? -eq 0 ]; then
 				break
